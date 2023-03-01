@@ -1,3 +1,4 @@
+//const mySecret = process.env['MESSAGE_STYLE'];
 require('dotenv').config();
 require('mongoose').config();
 mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true });
