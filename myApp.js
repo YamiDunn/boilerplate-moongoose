@@ -49,12 +49,12 @@ const createManyPeople = (arrayOfPeople, done) => {
       favoriteFoods: ["Bread", "Meat", "Cereal"],
     },
   ];
-  arrayOfPeople.save((err, data) => {
-    if (err) return console.error(err);
-    done(null , data);
-  })
-
-  
+  var createManyPeople = (arrayOfPeople, done) => {
+      Person.create(arrayOfPeople, (err, data) => {
+      if (err) return console.error(err);
+      done(null, data);
+    });
+  };
 };
 
 const findPeopleByName = (personName, done) => {
