@@ -1,31 +1,60 @@
 //const mySecret = process.env['MONGO_URI'];
-require('dotenv').config();
-let express = require('express');
-const mongoose = require('mongoose');
-let validator = require('validator');
+require("dotenv").config();
+let express = require("express");
+const mongoose = require("mongoose");
+let validator = require("validator");
 
-mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 
 const Schema = mongoose.Schema;
 
 let personSchema = new Schema({
-  name:{ type: String, required: true}, 
+  name: { type: String, required: true },
   age: Number,
-  favoriteFoods: [String]
+  favoriteFoods: [String],
 });
 
 const Person = mongoose.model("Person", personSchema);
 
 const createAndSavePerson = (done) => {
-  var OscarGil = new Person({name: "Oscar Gil", age: 30, favoriteFoods: ["eggs","Fish","All types of meal"]});
+  var OscarGil = new Person({
+    name: "Oscar Gil",
+    age: 30,
+    favoriteFoods: ["eggs", "Fish", "All types of meal"],
+  });
   OscarGil.save((err, data) => {
-    if (err) return console.error(err)
-    done(null /*, data*/);
+    if (err) return console.error(err);
+    done(null, data);
   });
 };
 
 const createManyPeople = (arrayOfPeople, done) => {
-  done(null /*, data*/);
+  var arrayOfPeople = [
+    {
+      name: "Pedro Navaja",
+      age: 69,
+      favoriteFoods: ["Chile", "Raw fish", "vegetables"],
+    },
+    {
+      name: "Carlos Gil",
+      age: 40,
+      favoriteFoods: ["eggs", "Fish", "Cheese"],
+    },
+    {
+      name: "Sebastian Gallego",
+      age: 28,
+      favoriteFoods: ["Bread", "Meat", "Cereal"],
+    },
+  ];
+  arrayOfPeople.save((err, data) => {
+    if (err) return console.error(err);
+    done(null , data);
+  })
+
+  
 };
 
 const findPeopleByName = (personName, done) => {
