@@ -64,45 +64,69 @@ const findPeopleByName = (personName, done) => {
 };
 
 const findOneByFood = (food, done) => {
-  Person.findOne({favoriteFoods: food}, (err, data) => {
+  Person.findOne({ favoriteFoods: food }, (err, data) => {
     if (err) return console.error(err);
     done(null, data);
-  });  
+  });
 };
 
 const findPersonById = (personId, done) => {
-  Person.findById({id: _id}, (err, data) => {
-  if (err) return console.error(err) 
-  done(null, data);
+  Person.findById({ _id: personId }, (err, data) => {
+    if (err) return console.error(err);
+    done(null, data);
   });
 };
 
 const findEditThenSave = (personId, done) => {
   const foodToAdd = "hamburger";
-
-  done(null /*, data*/);
+  Person.findById({ _id: personId }, (err, data) => {
+    if (data) {
+      data.favoriteFoods.push(foodToAdd);
+      console.log(Person.favoriteFoods);
+      data.save((err, data) => {
+        if (err) return console.log(err);
+        done(null, data);
+      });
+    } else {
+      console.error(err);
+    }
+  });
 };
 
 const findAndUpdate = (personName, done) => {
   const ageToSet = 20;
-
-  done(null /*, data*/);
+  Person.findOneAndUpdate({ name: personName }, { new: true }, (err, data) => {
+    data.age = ageToSet; //you can include this line inside the func arguments
+    if (err) return console.log(err);
+    done(null, data);
+  });
 };
 
 const removeById = (personId, done) => {
-  done(null /*, data*/);
+  Person.findByIdAndRemove({ _id: personId }, (err, data) => {
+    if (err) return console.log(err);
+    done(null, data);
+  });
 };
 
 const removeManyPeople = (done) => {
   const nameToRemove = "Mary";
-
-  done(null /*, data*/);
+  Person.remove({ name: nameToRemove }, (err, data) => {
+    if (err) return console.log(err);
+    done(null, data);
+  });
 };
 
 const queryChain = (done) => {
   const foodToSearch = "burrito";
-
-  done(null /*, data*/);
+  Person.find({ favoriteFoods: foodToSearch })
+    .sort({ name: 1 })// Here: 1 for ascending	order and -1 for descending order.
+    .limit(2)// return array which has 5 items in it.
+    .select({ age: 0 })// Here: 0 means false and thus hide name property; 1 means true so age property will show.
+    .exec((err, data) => {
+      if (err) return console.log(err);
+      done(null, data);
+    });
 };
 
 /** **Well Done !!**
